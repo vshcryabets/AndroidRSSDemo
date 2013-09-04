@@ -3,7 +3,6 @@ package com.v2soft.rssdemo.services;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.PublicKey;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -14,11 +13,12 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.util.Log;
 
+import com.v2soft.androidcursor.CursorDao;
 import com.v2soft.rssdemo.domains.Feed;
 import com.v2soft.rssdemo.domains.FeedItem;
+import com.v2soft.rssdemo.providers.FeedProvider;
 
 /**
  * Сервис для получения ленты новостей и обновления локального харнилища. 
@@ -43,8 +43,6 @@ public class RefreshFeedService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-            ConnectivityManager mConnectivity;
-            //            mConnectivity.
             final Feed feed = retreiveFeed();
             updateLocalStorage(feed);
         } catch (Exception e) {
@@ -53,7 +51,10 @@ public class RefreshFeedService extends IntentService {
     }
 
     private void updateLocalStorage(Feed feed) {
-        // TODO Auto-generated method stub
+        CursorDao<FeedItem> dao = new CursorDao<FeedItem>(FeedItem.class, null);
+        for (FeedItem item : feed.getItems()) {
+            getContentResolver().insert(FeedProvider.CONTENT_URI, dao.itemToContentValues(item));
+        }
     }
 
     private Feed retreiveFeed() throws IOException, XmlPullParserException {

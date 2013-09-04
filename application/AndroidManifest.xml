@@ -27,8 +27,13 @@
 
         <service
             android:name=".services.RefreshFeedService"
-            android:exported="false" 
-            android:enabled="true"/>
+            android:enabled="true"
+            android:exported="false" />
+
+        <provider
+            android:name=".providers.FeedProvider"
+            android:authorities="com.v2soft.rssdemo.providers.FeedProvider"
+            android:exported="false" />
     </application>
 
 </manifest>
