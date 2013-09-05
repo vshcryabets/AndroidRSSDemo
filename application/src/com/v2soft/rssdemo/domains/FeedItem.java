@@ -19,7 +19,7 @@ public class FeedItem {
     public static final String FIELD_PUBLISH_DATE = "publishDate";
     public static final String FIELD_LINK = "link";
     public static final String FIELD_AUTHOR = "author";
-    public static final String FIELD_ID = "id";
+    public static final String FIELD_ID = "_id";
     
     @CursorDataAnnotation(columnName=FIELD_TITLE)
     private String mTitle;
