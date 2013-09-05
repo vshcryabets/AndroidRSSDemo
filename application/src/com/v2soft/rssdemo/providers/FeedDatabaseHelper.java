@@ -15,7 +15,7 @@ import com.v2soft.rssdemo.domains.FeedItem;
 public class FeedDatabaseHelper extends SQLiteOpenHelper {
     private static final String LOG_TAG = FeedDatabaseHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "rssfeed.sqlite";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     // Database table
     public static final String TABLE_FEED_ITEMS = "feeditems";
 
@@ -29,7 +29,8 @@ public class FeedDatabaseHelper extends SQLiteOpenHelper {
             + FeedItem.FIELD_IMAGE + " text, " 
             + FeedItem.FIELD_LINK + " text, " 
             + FeedItem.FIELD_TITLE + " text not null, " 
-            + FeedItem.FIELD_PUBLISH_DATE + " integer " 
+            + FeedItem.FIELD_PUBLISH_DATE + " integer not null, "
+            + "UNIQUE ("+FeedItem.FIELD_PUBLISH_DATE+", "+FeedItem.FIELD_TITLE+")"
             + ");";
 
     public FeedDatabaseHelper(Context context) {

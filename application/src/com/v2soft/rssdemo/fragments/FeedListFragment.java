@@ -62,6 +62,8 @@ public class FeedListFragment extends Fragment implements OnClickListener, Loade
         mAdapter.setViewBinder(mViewBinder);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(this);
+        // refresh feed
+        getActivity().startService(new Intent(getActivity(), RefreshFeedService.class));
         return view;
     }
 

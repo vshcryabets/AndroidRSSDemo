@@ -1,7 +1,5 @@
 package com.v2soft.rssdemo.providers;
 
-import com.v2soft.rssdemo.domains.FeedItem;
-
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -9,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+
+import com.v2soft.rssdemo.domains.FeedItem;
 
 /**
  * Feed content provider.
@@ -57,7 +57,16 @@ public class FeedProvider extends ContentProvider {
         values.remove(FeedItem.FIELD_ID);
         switch (uriType) {
         case FEED_ITEMS:
-            id = sqlDB.insert(FeedDatabaseHelper.TABLE_FEED_ITEMS, null, values);
+            Cursor cursor = sqlDB.query(FeedDatabaseHelper.TABLE_FEED_ITEMS, new String[]{FeedItem.FIELD_ID}, 
+                    FeedItem.FIELD_PUBLISH_DATE+"=? AND "+FeedItem.FIELD_TITLE+"=?", 
+                    new String[]{String.valueOf(values.getAsLong(FeedItem.FIELD_PUBLISH_DATE)),
+                    values.getAsString(FeedItem.FIELD_TITLE)}, null, null, null);
+            if ( !cursor.moveToFirst() ) {
+                id = sqlDB.insert(FeedDatabaseHelper.TABLE_FEED_ITEMS, null, values);
+            } else {
+                id = cursor.getLong(0);
+            }
+            cursor.close();
             break;
         default:
             throw new IllegalArgumentException("Unknown URI: " + uri);
