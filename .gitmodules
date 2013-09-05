@@ -1,0 +1,3 @@
+[submodule "contrib/V2AndroidCursor"]
+	path = contrib/V2AndroidCursor
+	url = https://github.com/vshcryabets/V2AndroidCursor.git
